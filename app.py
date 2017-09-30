@@ -18,18 +18,28 @@ def my_page():
     return "Hello, my name is Fabio Lanzoni"
 
 
-@app.route('/pets')
-def pets_route(arg):
-    pets = {[
+@app.route('/pets', methods=['POST', 'GET'])
+def pets_route():
+    pets = {'pets': [
         {
-            'name': 'Charlie',
-            'color': 'Brown'
+          'name': 'Charlie',
+          'color': 'Brown'
         },
         {
-            'name': 'Bingo',
-            'color': 'Blue'
+          'name': 'Bingo',
+          'color': 'Blue'
         }
     ]}
+
+    json_pets = json.dumps(pets)
+
+    if request.method == 'POST':
+        if request.data:
+            return (request.data, 201, None)
+        else:
+            return (None, 401, None)
+    else:
+        return json_pets
 
 
 @app.route('/courses', methods=['GET', 'POST'])
